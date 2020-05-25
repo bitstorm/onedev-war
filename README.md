@@ -1,2 +1,2 @@
-# Some experiments to run OneDev [OneDev](https://github.com/theonedev/onedev) as war
+# Some experiments to run [OneDev](https://github.com/theonedev/onedev) as war
 
