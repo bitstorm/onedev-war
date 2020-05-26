@@ -1,15 +1,24 @@
 package org.mycompany.config.mock;
 
+import org.eclipse.jetty.server.session.SessionHandler;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import javax.inject.Provider;
 import io.onedev.server.util.jetty.JettyLauncher;
 
 public class JettyLauncherMock implements JettyLauncher, Provider<ServletContextHandler> {
-    private static ServletContextHandler INSTANCE = new ServletContextHandler();
+    private final ServletContextHandler mockContext;
+    
+    public JettyLauncherMock() {
+        mockContext = new ServletContextHandler();
+        SessionHandler sessionHandler = new SessionHandler();
+        mockContext.setSessionHandler(sessionHandler);
+        sessionHandler.setMaxInactiveInterval(180);
+    }
+
     @Override
     public ServletContextHandler get() {
         
-        return INSTANCE;
+        return mockContext;
     }
 
     @Override

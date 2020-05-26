@@ -39,7 +39,6 @@ public class ServletConfig implements ServletContextListener {
         appLoader.startGiceCI();
         appLoader.loadModules();
         
-        
         FilterRegistration shiroFilter = servletContext.addFilter("shiro", ServletAppLoader.getInstance(ShiroFilter.class));
         shiroFilter.addMappingForUrlPatterns(null, true, "/*");
         
