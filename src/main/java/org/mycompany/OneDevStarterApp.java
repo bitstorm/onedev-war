@@ -2,8 +2,10 @@ package org.mycompany;
 
 import org.apache.wicket.ISessionListener;
 import org.apache.wicket.Session;
+import org.apache.wicket.request.IRequestHandler;
 import org.apache.wicket.request.Request;
 import org.apache.wicket.request.Url;
+import org.apache.wicket.request.cycle.IRequestCycleListener;
 import org.apache.wicket.request.cycle.RequestCycle;
 import org.apache.wicket.request.resource.IResource;
 import org.apache.wicket.request.resource.ResourceReference;
@@ -12,6 +14,7 @@ import java.util.List;
 import java.util.Set;
 import javax.inject.Inject;
 import javax.inject.Singleton;
+import io.onedev.server.persistence.SessionManager;
 import io.onedev.server.web.OneWebApplication;
 import io.onedev.server.web.WebApplicationConfigurator;
 import io.onedev.server.web.img.Img;
@@ -29,12 +32,14 @@ public class OneDevStarterApp extends OneWebApplication
 {
 
     private WebSocketManager webSocketManager;
+    private SessionManager sessionManager;
 
     @Inject
 	public OneDevStarterApp(Set<WebApplicationConfigurator> applicationConfigurators,
-            UICustomization uiCustomization, WebSocketManager webSocketManager) {
+            UICustomization uiCustomization, WebSocketManager webSocketManager, SessionManager sessionManager ) {
         super(applicationConfigurators, uiCustomization);
         this.webSocketManager = webSocketManager;
+        this.sessionManager = sessionManager;
     }
 
     /**
@@ -68,5 +73,62 @@ public class OneDevStarterApp extends OneWebApplication
             }
 		    
 		});
+		getRequestCycleListeners().add(new IRequestCycleListener() {
+            
+            @Override
+            public void onUrlMapped(RequestCycle cycle, IRequestHandler handler, Url url) {
+                // TODO Auto-generated method stub
+                
+            }
+            
+            @Override
+            public void onRequestHandlerScheduled(RequestCycle cycle, IRequestHandler handler) {
+                // TODO Auto-generated method stub
+                
+            }
+            
+            @Override
+            public void onRequestHandlerResolved(RequestCycle cycle, IRequestHandler handler) {
+                // TODO Auto-generated method stub
+                
+            }
+            
+            @Override
+            public void onRequestHandlerExecuted(RequestCycle cycle, IRequestHandler handler) {
+                // TODO Auto-generated method stub
+                
+            }
+            
+            @Override
+            public void onExceptionRequestHandlerResolved(RequestCycle cycle, IRequestHandler handler,
+                    Exception exception) {
+                // TODO Auto-generated method stub
+                
+            }
+            
+            @Override
+            public IRequestHandler onException(RequestCycle cycle, Exception ex) {
+                // TODO Auto-generated method stub
+                return null;
+            }
+            
+            @Override
+            public void onEndRequest(RequestCycle cycle) {
+                // TODO Auto-generated method stub
+                
+            }
+            
+            @Override
+            public void onDetach(RequestCycle cycle) {
+                sessionManager.closeSession();
+                
+            }
+            
+            @Override
+            public void onBeginRequest(RequestCycle cycle) {
+                sessionManager.openSession();
+                
+            }
+        });
 	}
 }

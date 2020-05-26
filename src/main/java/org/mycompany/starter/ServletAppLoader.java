@@ -9,6 +9,7 @@ import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 import com.google.inject.AbstractModule;
@@ -24,6 +25,7 @@ import io.onedev.commons.utils.FileUtils;
 import io.onedev.commons.utils.StringUtils;
 
 public class ServletAppLoader extends AppLoader {
+    private static final String OVERRIDE_MODULE = "overrideModule";
     private static final Logger logger = LoggerFactory.getLogger(ServletAppLoader.class);
     
     public void startGiceCI() {
@@ -32,9 +34,13 @@ public class ServletAppLoader extends AppLoader {
         OverriddenModuleBuilder builder = Modules.override(new AppLoaderModule());
         
         Map<String, AbstractPluginModule> modules = loadPluginModules();
-        modules.put("overrideModule", new OverrideModule());
+        modules.put(OVERRIDE_MODULE, new OverrideModule());
         
-        for (String key: DependencyUtils.sortDependencies(modules)) {
+        List<String> sortDependencies = DependencyUtils.sortDependencies(modules);
+        sortDependencies.remove(OVERRIDE_MODULE);
+        sortDependencies.add(OVERRIDE_MODULE);
+        
+        for (String key: sortDependencies) {
             builder = Modules.override(builder.with(modules.get(key)));
         }
         
