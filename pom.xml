@@ -30,7 +30,7 @@
 		</license>
 	</licenses>
 	<properties>
-		<wicket.version>7.14.0</wicket.version>
+		<wicket.version>7.17.0</wicket.version>
 		<jetty9.version>9.4.24.v20191120</jetty9.version>
 		<log4j.version>2.6.2</log4j.version>
 		<junit.version>4.12</junit.version>
